@@ -63,8 +63,9 @@ window.requestAnimationFrame(async () => {
   }
 
   const requested = new URLSearchParams(location.search).get('threads')
-  const threads = Math.max(
-    (requested == null ? navigator.hardwareConcurrency : Number(requested)) | 0, 1)
+    ?? localStorage.getItem('2048-ai:threads')
+  const threads = Math.min(Math.max(
+    (requested == null ? navigator.hardwareConcurrency : Number(requested)) | 0, 1), 32)
 
   const memory = new WebAssembly.Memory({
     initial: MEMORY_PAGES,
@@ -90,7 +91,7 @@ window.requestAnimationFrame(async () => {
     () => createWorker('./js/pool-worker.js', { module, memory }),
   ))
 
-  const worker = await createWorker('./js/worker.js?v=2', { module, memory, stats })
+  const worker = await createWorker('./js/worker.js?v=3', { module, memory, stats })
   console.log(`Compute threads: ${threads}`)
 
   /** @type{Map<number, bigint>} */
@@ -116,6 +117,33 @@ window.requestAnimationFrame(async () => {
 
   const toggleButton = document.querySelector('#ai-toggle');
   const depthEl = document.querySelector('#ai-depth');
+  const budgetSelect = /** @type{HTMLSelectElement} */(document.querySelector('#ai-budget'));
+  const threadsSelect = /** @type{HTMLSelectElement} */(document.querySelector('#ai-threads'));
+
+  // Search budget: read per move, remembered across visits.
+  const storedBudget = localStorage.getItem('2048-ai:budget');
+  if (storedBudget && [...budgetSelect.options].some(o => o.value === storedBudget)) {
+    budgetSelect.value = storedBudget;
+  }
+  budgetSelect.addEventListener('change', () => {
+    localStorage.setItem('2048-ai:budget', budgetSelect.value);
+  });
+
+  // Threads: switching requires rebuilding the worker pool, so persist the
+  // choice and reload with it in the URL (the game state survives reloads).
+  for (let i = 1; i <= threads; ++i) {
+    const option = document.createElement('option');
+    option.value = String(i);
+    option.textContent = String(i);
+    threadsSelect.append(option);
+  }
+  threadsSelect.value = String(threads);
+  threadsSelect.addEventListener('change', () => {
+    localStorage.setItem('2048-ai:threads', threadsSelect.value);
+    const params = new URLSearchParams(location.search);
+    params.set('threads', threadsSelect.value);
+    location.search = params.toString();
+  });
 
   // Keep the dynamic button label in the current UI language.
   window.addEventListener('i18nchange', () => {
@@ -134,7 +162,7 @@ window.requestAnimationFrame(async () => {
    */
   function step(restart) {
     const board = currentState()
-    worker.postMessage({ board, restart })
+    worker.postMessage({ board, restart, budget: Number(budgetSelect.value) })
   }
 
   let randomDir = 0

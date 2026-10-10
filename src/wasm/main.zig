@@ -10,6 +10,7 @@ var ctx: struct {
 
   prev_depth: u6,
   last_depth: u32,
+  budget: u32,
 } = undefined;
 
 // Called once, by the worker that runs `search`.
@@ -19,13 +20,20 @@ export fn init() void {
   ctx.searcher.init(&ctx.move_table, &ctx.heuristic);
   ctx.prev_depth = 0;
   ctx.last_depth = 0;
+  ctx.budget = BFS_BUDGET;
+}
+
+// Search budget: how many boards the depth-allocating BFS may expand.
+// Bounded by the statically reserved buffer, so any value is safe.
+export fn setBudget(budget: u32) void {
+  ctx.budget = @max(1, @min(budget, BFS_BUDGET));
 }
 
 fn allocDepth(valid: *const Board.ValidMoves) u6 {
   const S = struct {
     var bfs_buffer: [BFS_BUDGET]Board = undefined;
   };
-  const buffer = S.bfs_buffer[0..S.bfs_buffer.len];
+  const buffer = S.bfs_buffer[0..ctx.budget];
   var bfs: Bfs = .new(buffer, &ctx.move_table);
   return bfs.expand(valid.moves[0..valid.len]);
 }

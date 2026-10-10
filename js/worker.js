@@ -11,9 +11,12 @@ addEventListener('message', async ({ data }) => {
 
   // search() runs the batch protocol itself: it publishes the frontier, works
   // the queue alongside the pool and blocks until the last task lands.
-  addEventListener('message', ({ data: { board, restart } }) => {
+  addEventListener('message', ({ data: { board, restart, budget } }) => {
     if (restart) {
       exports.reset_depth()
+    }
+    if (budget != null) {
+      exports.setBudget(budget)
     }
     const dir = exports.search(board)
     // Stats travel over a shared slot, not the message, so that a cached

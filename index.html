@@ -46,6 +46,17 @@
       <div class="ai-status">
         <span data-i18n="depthLabel">Search depth</span>: <span id="ai-depth">–</span>
       </div>
+      <div class="ai-settings">
+        <label><span data-i18n="budgetLabel">Search budget</span>
+          <select id="ai-budget">
+            <option value="32768">32768</option>
+            <option value="131072">131072</option>
+            <option value="524288">524288</option>
+            <option value="655360" selected>655360</option>
+          </select></label>
+        <label><span data-i18n="threadsLabel">Threads</span>
+          <select id="ai-threads"></select></label>
+      </div>
       <p class="ai-warning" id="ai-warning" hidden data-i18n="coiHelp"></p>
 
       <div class="game-container">

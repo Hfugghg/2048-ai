@@ -65,7 +65,8 @@
   margin: 8px 0 12px;
 }
 
-.lang-row select {
+.lang-row select,
+.ai-settings select {
   font-family: inherit;
   font-size: 14px;
   padding: 4px 8px;
@@ -73,6 +74,18 @@
   border-radius: 3px;
   background: #f9f6f2;
   color: #776e65;
+}
+
+.ai-settings {
+  clear: both;
+  text-align: right;
+  margin: 0 0 12px;
+  color: #776e65;
+  font-size: 14px;
+}
+
+.ai-settings label {
+  margin-left: 14px;
 }
 
 .fork-badge {
