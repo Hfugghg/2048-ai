@@ -1,4 +1,6 @@
-const BFS_BUDGET = 655360;
+// Maximum search budget (2^22): boards the depth-allocating BFS may expand.
+// 4M boards = 32 MiB in the shared 128 MiB WebAssembly memory.
+const BFS_BUDGET = 4194304;
 
 const MAX_POOL = 31;
 const WORKER_STACK = 256 * 1024;

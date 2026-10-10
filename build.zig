@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const MEMORY_BYTES = 64 * 1024 * 1024;
+const MEMORY_BYTES = 128 * 1024 * 1024;
 
 pub fn build(b: *std.Build) void {
   const target = b.standardTargetOptions(.{});

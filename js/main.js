@@ -4,7 +4,7 @@ import {initBoardEditor} from "./board-editor.js"
 
 // Mirrors MEMORY_BYTES in build.zig. The module imports its memory so every
 // worker can instantiate over the same one; a mismatch is a LinkError here.
-const MEMORY_PAGES = 1024
+const MEMORY_PAGES = 2048
 
 const RELOAD_KEY = '2048-ai:coi-reload'
 const MAX_ISOLATION_RELOADS = 2
