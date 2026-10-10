@@ -18,6 +18,18 @@
   clear: both;
 }
 
+.ai-status {
+  clear: both;
+  text-align: right;
+  margin: 6px 0 12px;
+  color: #776e65;
+  font-size: 14px;
+}
+
+#ai-depth {
+  font-weight: bold;
+}
+
 @media screen and (max-width: 520px) {
   .ai-buttons {
     width: 135px;

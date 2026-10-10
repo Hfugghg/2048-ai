@@ -15,7 +15,8 @@ addEventListener('message', async ({ data }) => {
     if (restart) {
       exports.reset_depth()
     }
-    postMessage(exports.search(board))
+    const dir = exports.search(board)
+    postMessage({ dir, depth: exports.lastDepth() })
   })
 
   postMessage('ready')

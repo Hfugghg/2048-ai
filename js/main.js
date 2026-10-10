@@ -102,6 +102,7 @@ window.requestAnimationFrame(async () => {
   }
 
   const toggleButton = document.querySelector('#ai-toggle');
+  const depthEl = document.querySelector('#ai-depth');
 
   // Keep the dynamic button label in the current UI language.
   window.addEventListener('i18nchange', () => {
@@ -126,7 +127,9 @@ window.requestAnimationFrame(async () => {
   let randomDir = 0
   let totalMove, startTime
 
-  worker.addEventListener('message', ({ data: dir }) => {
+  worker.addEventListener('message', ({ data }) => {
+    const { dir, depth } = data
+    depthEl.textContent = depth
     randomDir = (randomDir + 1) % 4
     const finalDir = (dir == -1) ? randomDir : dir
     game.move(finalDir)
@@ -145,6 +148,7 @@ window.requestAnimationFrame(async () => {
       totalMove = 0
       startTime = Date.now()
       toggleButton.textContent = t('stopAI')
+      depthEl.textContent = '–'
       step(true)
     } else {
       const endTime = Date.now()

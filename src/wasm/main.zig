@@ -9,6 +9,7 @@ var ctx: struct {
   searcher: ParallelSearch,
 
   prev_depth: u6,
+  last_depth: u32,
 } = undefined;
 
 // Called once, by the worker that runs `search`.
@@ -17,6 +18,7 @@ export fn init() void {
   ctx.heuristic.init();
   ctx.searcher.init(&ctx.move_table, &ctx.heuristic);
   ctx.prev_depth = 0;
+  ctx.last_depth = 0;
 }
 
 fn allocDepth(valid: *const Board.ValidMoves) u6 {
@@ -37,7 +39,8 @@ export fn search(board_data: u64) i32 {
   const moves = ctx.move_table.getMoves(board);
   const valid = board.filterMoves(&moves);
 
-  const tag = ctx.searcher.request(&valid, ctx.prev_depth);
+  const predicted = ctx.prev_depth;
+  const tag = ctx.searcher.request(&valid, predicted);
 
   // Runs while the pool is already scoring the frontier, so nothing waits on
   // it -- it settles what depth this move should have had, and predicts the
@@ -46,10 +49,20 @@ export fn search(board_data: u64) i32 {
   ctx.prev_depth = depth;
 
   const searchResult = ctx.searcher.finalize(tag, depth);
+
+  // The move is scored at the deeper of the predicted and allocated depths;
+  // JS reads it back for the stats display.
+  ctx.last_depth = @max(depth, predicted);
+
   if (searchResult) |dir| {
     return @intFromEnum(dir);
   }
   return -1;
+}
+
+// Depth the last `search` was scored at. Only meaningful after `search`.
+export fn lastDepth() u32 {
+  return ctx.last_depth;
 }
 
 // Claims a stack and never returns. Nothing here may need a stack frame of its
