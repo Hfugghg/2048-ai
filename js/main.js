@@ -39,11 +39,20 @@ async function ensureIsolated() {
 function createWorker(worker_url, config) {
   const worker = new Worker(worker_url, { type: 'module' })
   worker.postMessage(config)
-  return new Promise((resolve, reject) => worker.addEventListener('message', e => {
-    const msg = e.data
-    if (msg != 'ready') reject(new Error(`Expected 'ready', got '${msg}'`))
-    resolve(worker)
-  }, { once: true }))
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(
+      () => reject(new Error('worker failed to start in time')), 60000)
+    worker.addEventListener('message', e => {
+      const msg = e.data
+      if (msg != 'ready') reject(new Error(`Expected 'ready', got '${msg}'`))
+      clearTimeout(timer)
+      resolve(worker)
+    }, { once: true })
+    worker.addEventListener('error', e => {
+      clearTimeout(timer)
+      reject(new Error(e.message || 'worker failed to start'))
+    }, { once: true })
+  })
 }
 
 window.requestAnimationFrame(async () => {
@@ -79,19 +88,30 @@ window.requestAnimationFrame(async () => {
   const stats = new Int32Array(new SharedArrayBuffer(16))
 
   // Compiled once and instantiated per worker, so N workers don't each
-  // recompile the module on startup.
+  // recompile the module on startup. The `?v=` prefix is part of the
+  // engine/JS contract (memory size, exports): bump it on every change so
+  // cached older pairs can never mix.
   const module = await WebAssembly.compileStreaming(
-    fetch(new URL('../zig-out/main.wasm', import.meta.url)),
+    fetch(new URL('../zig-out/main.wasm?v=2', import.meta.url)),
   )
 
   // The pool parks before it touches anything the searcher builds, but every
   // worker is still handshaken before the first search goes out.
-  await Promise.all(Array.from(
-    { length: threads - 1 },
-    () => createWorker('./js/pool-worker.js', { module, memory }),
-  ))
-
-  const worker = await createWorker('./js/worker.js?v=3', { module, memory, stats })
+  let worker
+  try {
+    await Promise.all(Array.from(
+      { length: threads - 1 },
+      () => createWorker('./js/pool-worker.js', { module, memory }),
+    ))
+    worker = await createWorker('./js/worker.js?v=3', { module, memory, stats })
+  } catch (err) {
+    // Engine failed to start (e.g. a mixed-version wasm from the cache).
+    // Offer guidance instead of hanging silently.
+    console.error(err)
+    const warning = document.getElementById('ai-warning')
+    if (warning) warning.hidden = false
+    return
+  }
   console.log(`Compute threads: ${threads}`)
 
   /** @type{Map<number, bigint>} */
