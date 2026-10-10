@@ -1,4 +1,5 @@
 import {GameManager} from "../vendor/2048.min.js"
+import {t} from "./i18n.js"
 
 // Mirrors MEMORY_BYTES in build.zig. The module imports its memory so every
 // worker can instantiate over the same one; a mismatch is a LinkError here.
@@ -101,6 +102,11 @@ window.requestAnimationFrame(async () => {
 
   const toggleButton = document.querySelector('#ai-toggle');
 
+  // Keep the dynamic button label in the current UI language.
+  window.addEventListener('i18nchange', () => {
+    toggleButton.textContent = aiRunning ? t('stopAI') : t('startAI');
+  });
+
   /**
    * @param {boolean} restart 
    */
@@ -130,14 +136,14 @@ window.requestAnimationFrame(async () => {
     if (running) {
       totalMove = 0
       startTime = Date.now()
-      toggleButton.textContent = 'Stop'
+      toggleButton.textContent = t('stopAI')
       step(true)
     } else {
       const endTime = Date.now()
       console.log(`Time elapsed: ${(endTime - startTime) / 1000} seconds
 Moves taken: ${totalMove} moves
 Speed: ${totalMove * 1000 / (endTime - startTime)} moves/s`)
-      toggleButton.textContent = 'Start AI'
+      toggleButton.textContent = t('startAI')
     }
     aiRunning = running
   }

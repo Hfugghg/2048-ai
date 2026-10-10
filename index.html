@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
   <head>
     <meta charset="utf-8">
-    <title>2048 AI by Zap</title>
+    <title>2048 AI — fork of ziap/2048-ai</title>
 
     <link rel="stylesheet" href="vendor/2048.min.css">
     <link rel="stylesheet" href="ai.css">
@@ -18,29 +18,37 @@
   <body>
     <div class="container">
       <div class="heading">
-        <h1 class="title">2048</h1>
+        <h1 class="title">2048 <span class="fork-badge" data-i18n="forkBadge">fork</span></h1>
         <div class="scores-container">
           <div class="score-container">0</div>
           <div class="best-container">0</div>
         </div>
       </div>
 
+      <div class="lang-row">
+        <select id="lang-select">
+          <option value="en">English</option>
+          <option value="zh-Hans">简体中文</option>
+          <option value="zh-Hant">繁體中文</option>
+        </select>
+      </div>
+
       <div class="above-game" style="display: none">
-        <p class="game-intro">Watch the AI get to the <strong>2048 tile!</strong></p>
-        <a class="restart-button">New Game</a>
+        <p class="game-intro" data-i18n-html="intro">Watch the AI get to the <strong>2048 tile!</strong></p>
+        <a class="restart-button" data-i18n="newGame">New Game</a>
       </div>
       <div class="ai-menu">
-        <p class="game-intro">AI controls</p>
-        <a class="ai-buttons" id="ai-step">One Step</a>
-        <a class="ai-buttons" id="ai-toggle">Start AI</a>
+        <p class="game-intro" data-i18n="aiControls">AI controls</p>
+        <a class="ai-buttons" id="ai-step" data-i18n="oneStep">One Step</a>
+        <a class="ai-buttons" id="ai-toggle" data-i18n="startAI">Start AI</a>
       </div>
 
       <div class="game-container">
         <div class="game-message">
           <p></p>
           <div class="lower">
-            <a class="keep-playing-button">Keep going</a>
-            <a class="retry-button">Try again</a>
+            <a class="keep-playing-button" data-i18n="keepGoing">Keep going</a>
+            <a class="retry-button" data-i18n="tryAgain">Try again</a>
           </div>
         </div>
 
@@ -76,14 +84,14 @@
         </div>
       </div>
 
-      <p class="game-explanation">
-        <strong class="important">Note:</strong> This is an AI solver for the game 2048, created by <a href="https://ziap.github.io">Zap</a>. It's a WASM module running Expectimax search with transposition caching and memory-bounded depth allocation.
+      <p class="game-explanation" data-i18n-html="note">
+        <strong class="important">Note:</strong> This is an AI solver for the game 2048, originally created by <a href="https://ziap.github.io" target="_blank">Zap</a>. It's a WASM module running Expectimax search with transposition caching and memory-bounded depth allocation.
       </p>
-      <p>
-        This project is open-source and available <a href="https://github.com/ziap/2048-ai">here</a>.
+      <p data-i18n-html="forkNotice">
+        This page is an <strong>unofficial fork</strong> of <a href="https://github.com/ziap/2048-ai" target="_blank">ziap/2048-ai</a>. The fork lives at <a href="https://github.com/Hfugghg/2048-ai" target="_blank">Hfugghg/2048-ai</a>.
       </p>
       <hr>
-      <p>
+      <p data-i18n-html="credits">
         Original game by <a href="http://gabrielecirulli.com" target="_blank">Gabriele Cirulli.</a> Based on <a href="https://itunes.apple.com/us/app/1024!/id823499224" target="_blank">1024 by Veewo Studio</a> and conceptually similar to <a href="http://asherv.com/threes/" target="_blank">Threes by Asher Vollmer.</a>
       </p>
     </div>
