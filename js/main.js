@@ -7,6 +7,7 @@ import {initBoardEditor} from "./board-editor.js"
 const MEMORY_PAGES = 1024
 
 const RELOAD_KEY = '2048-ai:coi-reload'
+const MAX_ISOLATION_RELOADS = 2
 
 async function ensureIsolated() {
   if (window.crossOriginIsolated) {
@@ -15,7 +16,11 @@ async function ensureIsolated() {
   }
 
   if (!navigator.serviceWorker) return false
-  if (sessionStorage.getItem(RELOAD_KEY)) return false
+
+  // Bounded retries: a single failed attempt (e.g. a hard refresh bypassed
+  // the service worker at the wrong moment) must not brick the tab forever.
+  const attempts = parseInt(sessionStorage.getItem(RELOAD_KEY) ?? '0', 10)
+  if (attempts >= MAX_ISOLATION_RELOADS) return false
 
   try {
     await navigator.serviceWorker.register(new URL('../sw.js', import.meta.url))
@@ -24,7 +29,7 @@ async function ensureIsolated() {
     return false
   }
 
-  sessionStorage.setItem(RELOAD_KEY, '1')
+  sessionStorage.setItem(RELOAD_KEY, String(attempts + 1))
   location.reload()
 
   // The reload is async, so keep the caller from starting anything.
@@ -50,8 +55,11 @@ window.requestAnimationFrame(async () => {
   let aiRunning = false
 
   if (typeof SharedArrayBuffer == 'undefined') {
-    throw new Error('needs cross-origin isolation; serve over https:// or ' +
-      'localhost so sw.js can install, or send COOP/COEP (see config.toml)')
+    // Isolation could not be established (e.g. the service worker was
+    // bypassed). Show actionable guidance instead of a dead page.
+    const warning = document.getElementById('ai-warning')
+    if (warning) warning.hidden = false
+    return
   }
 
   const requested = new URLSearchParams(location.search).get('threads')
