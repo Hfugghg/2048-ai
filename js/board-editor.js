@@ -60,6 +60,7 @@ export function initBoardEditor(game, TileClass, options) {
   const toggle = document.getElementById('ai-edit')
   const panel = document.querySelector('.edit-panel')
   const gridContainer = document.querySelector('.grid-container')
+  const gameContainer = document.querySelector('.game-container')
   const cells = gridContainer.querySelectorAll('.grid-cell')
 
   /** @type {{x: number, y: number} | null} */
@@ -86,8 +87,11 @@ export function initBoardEditor(game, TileClass, options) {
 
   toggle.addEventListener('click', () => setEditing(!editing))
 
-  gridContainer.addEventListener('click', (e) => {
+  // Listen on the game container: tiles render in a sibling layer above the
+  // grid, so clicks on occupied cells never bubble through .grid-container.
+  gameContainer.addEventListener('click', (e) => {
     if (!editing) return
+    if (e.target && e.target.closest && e.target.closest('.game-message')) return
     const index = cellIndexFromPoint(cells, e.clientX, e.clientY)
     if (index < 0) return
     if (selected) highlight(selected.y * 4 + selected.x, false)
