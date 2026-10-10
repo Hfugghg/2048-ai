@@ -41,6 +41,7 @@
         <p class="game-intro" data-i18n="aiControls">AI controls</p>
         <a class="ai-buttons" id="ai-step" data-i18n="oneStep">One Step</a>
         <a class="ai-buttons" id="ai-toggle" data-i18n="startAI">Start AI</a>
+        <a class="ai-buttons" id="ai-edit">Edit Board</a>
       </div>
 
       <div class="game-container">
@@ -81,6 +82,28 @@
 
         <div class="tile-container">
 
+        </div>
+      </div>
+
+      <div class="edit-panel" hidden>
+        <p class="edit-hint" data-i18n="editHint">Click a cell, then pick a value (powers of two, up to 32768)</p>
+        <div class="edit-values">
+          <a class="edit-value edit-clear" data-value="0" data-i18n="clearCell">Clear</a>
+          <a class="edit-value" data-value="2">2</a>
+          <a class="edit-value" data-value="4">4</a>
+          <a class="edit-value" data-value="8">8</a>
+          <a class="edit-value" data-value="16">16</a>
+          <a class="edit-value" data-value="32">32</a>
+          <a class="edit-value" data-value="64">64</a>
+          <a class="edit-value" data-value="128">128</a>
+          <a class="edit-value" data-value="256">256</a>
+          <a class="edit-value" data-value="512">512</a>
+          <a class="edit-value" data-value="1024">1024</a>
+          <a class="edit-value" data-value="2048">2048</a>
+          <a class="edit-value" data-value="4096">4096</a>
+          <a class="edit-value" data-value="8192">8192</a>
+          <a class="edit-value" data-value="16384">16384</a>
+          <a class="edit-value" data-value="32768">32768</a>
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 import {GameManager} from "../vendor/2048.min.js"
 import {t} from "./i18n.js"
+import {initBoardEditor} from "./board-editor.js"
 
 // Mirrors MEMORY_BYTES in build.zig. The module imports its memory so every
 // worker can instantiate over the same one; a mismatch is a LinkError here.
@@ -105,6 +106,13 @@ window.requestAnimationFrame(async () => {
   // Keep the dynamic button label in the current UI language.
   window.addEventListener('i18nchange', () => {
     toggleButton.textContent = aiRunning ? t('stopAI') : t('startAI');
+  });
+
+  // Manual board editing: use the game's own Tile class (via a live tile),
+  // so edited tiles behave exactly like regular ones.
+  const liveTile = [].concat(...game.grid.cells).find(cell => cell)
+  initBoardEditor(game, liveTile.constructor, {
+    stopAI: () => { if (aiRunning) toggleAI(false) },
   });
 
   /**

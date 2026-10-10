@@ -105,3 +105,55 @@ html[lang="zh-Hans"] .game-message.game-won p::after { content: "你赢了！"; 
 html[lang="zh-Hans"] .game-message.game-over p::after { content: "游戏结束！"; color: #776e65; }
 html[lang="zh-Hant"] .game-message.game-won p::after { content: "你贏了！"; color: #f9f6f2; }
 html[lang="zh-Hant"] .game-message.game-over p::after { content: "遊戲結束！"; color: #776e65; }
+
+/* Manual board editor */
+.edit-panel[hidden] {
+  display: none;
+}
+
+.edit-panel {
+  margin-top: 15px;
+}
+
+.edit-hint {
+  color: #776e65;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.edit-values {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+}
+
+.edit-value {
+  display: block;
+  text-align: center;
+  background: #8f7a66;
+  color: #f9f6f2;
+  border-radius: 3px;
+  padding: 8px 0;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.edit-value:hover {
+  background: #9f8b77;
+}
+
+.edit-clear {
+  background: #bbada0;
+}
+
+.grid-cell.edit-selected {
+  background: rgba(237, 194, 46, 0.35);
+  box-shadow: inset 0 0 0 3px #edc22e;
+}
+
+@media screen and (max-width: 520px) {
+  .edit-values {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
