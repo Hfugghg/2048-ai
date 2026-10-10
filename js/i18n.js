@@ -4,7 +4,7 @@
 
 const TRANSLATIONS = {
   "en": {
-    pageTitle: "2048 AI — fork of ziap/2048-ai",
+    pageTitle: "2048 AI — Hfugghg's fork",
     forkBadge: "fork",
     intro: "Watch the AI get to the <strong>2048 tile!</strong>",
     newGame: "New Game",
@@ -25,12 +25,12 @@ const TRANSLATIONS = {
     speedLabel: "Speed",
     speedUnit: "moves/s",
     langLabel: "Language",
-    note: 'This is an AI solver for the game 2048, originally created by <a href="https://ziap.github.io" target="_blank">Zap</a>. It\'s a WASM module running Expectimax search with transposition caching and memory-bounded depth allocation.',
-    forkNotice: 'This page is an <strong>unofficial fork</strong> of <a href="https://github.com/ziap/2048-ai" target="_blank">ziap/2048-ai</a>. The fork lives at <a href="https://github.com/Hfugghg/2048-ai" target="_blank">Hfugghg/2048-ai</a>.',
+    note: 'This is an AI solver for the game 2048, forked and maintained by <a href="https://github.com/Hfugghg/2048-ai" target="_blank">Hfugghg</a>. It\'s a WASM module running Expectimax search with transposition caching and memory-bounded depth allocation.',
+    forkNotice: 'This page is an <strong>unofficial fork</strong> of <a href="https://github.com/ziap/2048-ai" target="_blank">ziap/2048-ai</a>, the original AI project created by <a href="https://ziap.github.io" target="_blank">Zap</a>.',
     credits: 'Original game by <a href="http://gabrielecirulli.com" target="_blank">Gabriele Cirulli.</a> Based on <a href="https://itunes.apple.com/us/app/1024!/id823499224" target="_blank">1024 by Veewo Studio</a> and conceptually similar to <a href="http://asherv.com/threes/" target="_blank">Threes by Asher Vollmer.</a>',
   },
   "zh-Hans": {
-    pageTitle: "2048 AI —— ziap/2048-ai 的 fork 版本",
+    pageTitle: "2048 AI —— Hfugghg 的 fork 版本",
     forkBadge: "fork 版本",
     intro: "看 AI 冲到 <strong>2048 方块！</strong>",
     newGame: "新游戏",
@@ -51,12 +51,12 @@ const TRANSLATIONS = {
     speedLabel: "速度",
     speedUnit: "步/秒",
     langLabel: "语言",
-    note: '这是 2048 游戏的 AI 求解器，原版由 <a href="https://ziap.github.io" target="_blank">Zap</a> 开发。基于 WASM 模块运行 Expectimax（期望最大化）搜索，带置换表缓存和内存受限的深度分配。',
-    forkNotice: '本页面是 <a href="https://github.com/ziap/2048-ai" target="_blank">ziap/2048-ai</a> 的<strong>非官方 fork 版本</strong>，fork 仓库：<a href="https://github.com/Hfugghg/2048-ai" target="_blank">Hfugghg/2048-ai</a>。',
+    note: '这是 2048 游戏的 AI 求解器，由 <a href="https://github.com/Hfugghg/2048-ai" target="_blank">Hfugghg</a> fork 并维护。基于 WASM 模块运行 Expectimax（期望最大化）搜索，带置换表缓存和内存受限的深度分配。',
+    forkNotice: '本页面是 <a href="https://github.com/ziap/2048-ai" target="_blank">ziap/2048-ai</a> 的<strong>非官方 fork 版本</strong>——原版 AI 项目由 <a href="https://ziap.github.io" target="_blank">Zap</a> 开发。',
     credits: '原版游戏由 <a href="http://gabrielecirulli.com" target="_blank">Gabriele Cirulli</a> 开发，基于 <a href="https://itunes.apple.com/us/app/1024!/id823499224" target="_blank">Veewo Studio 的 1024</a>，概念上类似 <a href="http://asherv.com/threes/" target="_blank">Asher Vollmer 的 Threes</a>。',
   },
   "zh-Hant": {
-    pageTitle: "2048 AI —— ziap/2048-ai 的 fork 版本",
+    pageTitle: "2048 AI —— Hfugghg 的 fork 版本",
     forkBadge: "fork 版本",
     intro: "看 AI 衝到 <strong>2048 方塊！</strong>",
     newGame: "新遊戲",
@@ -77,8 +77,8 @@ const TRANSLATIONS = {
     speedLabel: "速度",
     speedUnit: "步/秒",
     langLabel: "語言",
-    note: '這是 2048 遊戲的 AI 求解器，原版由 <a href="https://ziap.github.io" target="_blank">Zap</a> 開發。基於 WASM 模組執行 Expectimax（期望最大化）搜尋，帶置換表快取與記憶體受限的深度分配。',
-    forkNotice: '本頁面是 <a href="https://github.com/ziap/2048-ai" target="_blank">ziap/2048-ai</a> 的<strong>非官方 fork 版本</strong>，fork 倉庫：<a href="https://github.com/Hfugghg/2048-ai" target="_blank">Hfugghg/2048-ai</a>。',
+    note: '這是 2048 遊戲的 AI 求解器，由 <a href="https://github.com/Hfugghg/2048-ai" target="_blank">Hfugghg</a> fork 並維護。基於 WASM 模組執行 Expectimax（期望最大化）搜尋，帶置換表快取與記憶體受限的深度分配。',
+    forkNotice: '本頁面是 <a href="https://github.com/ziap/2048-ai" target="_blank">ziap/2048-ai</a> 的<strong>非官方 fork 版本</strong>——原版 AI 專案由 <a href="https://ziap.github.io" target="_blank">Zap</a> 開發。',
     credits: '原版遊戲由 <a href="http://gabrielecirulli.com" target="_blank">Gabriele Cirulli</a> 開發，基於 <a href="https://itunes.apple.com/us/app/1024!/id823499224" target="_blank">Veewo Studio 的 1024</a>，概念上類似 <a href="http://asherv.com/threes/" target="_blank">Asher Vollmer 的 Threes</a>。',
   },
 };

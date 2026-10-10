@@ -1,5 +1,12 @@
 # 2048 AI
 
+> **Fork** — maintained by [Hfugghg](https://github.com/Hfugghg) ·
+> [github.com/Hfugghg/2048-ai](https://github.com/Hfugghg/2048-ai) ·
+> live demo: [hfugghg.github.io/2048-ai](https://hfugghg.github.io/2048-ai)
+>
+> Based on the original [ziap/2048-ai](https://github.com/ziap/2048-ai) by
+> [Zap](https://ziap.github.io).
+
 An AI made for the game 2048. The AI can reach 16384 most of the time and
 sometimes even reach 32768. Note, this is a newer and improved version of the
 AI, rewritten in Zig. You can find the old C++ version
@@ -93,7 +100,7 @@ Available options:
   -h, --help           Display this help message
 ```
 
-The web version is already hosted [here](https://ziap.github.io/2048-ai). For
+The web version is hosted [here](https://hfugghg.github.io/2048-ai). For
 hosting locally, just compile everything as shown above and use any HTTP
 server, for example:
 
