@@ -18,19 +18,11 @@
   <body>
     <div class="container">
       <div class="heading">
-        <h1 class="title">2048 <span class="fork-badge" data-i18n="forkBadge">fork</span></h1>
+        <h1 class="title">2048</h1>
         <div class="scores-container">
           <div class="score-container">0</div>
           <div class="best-container">0</div>
         </div>
-      </div>
-
-      <div class="lang-row">
-        <select id="lang-select">
-          <option value="en">English</option>
-          <option value="zh-Hans">简体中文</option>
-          <option value="zh-Hant">繁體中文</option>
-        </select>
       </div>
 
       <div class="above-game" style="display: none">
@@ -49,6 +41,7 @@
         <span data-i18n="speedLabel">Speed</span>: <span id="ai-speed">–</span> <span data-i18n="speedUnit">moves/s</span>
       </div>
       <div class="ai-settings">
+        <span class="fork-badge" data-i18n="forkBadge">fork</span>
         <label><span data-i18n="budgetLabel">Search budget</span>
           <select id="ai-budget">
             <option value="32768">32768</option>
@@ -61,6 +54,12 @@
           </select></label>
         <label><span data-i18n="threadsLabel">Threads</span>
           <select id="ai-threads"></select></label>
+        <label><span data-i18n="langLabel">Language</span>
+          <select id="lang-select">
+            <option value="en">English</option>
+            <option value="zh-Hans">简体中文</option>
+            <option value="zh-Hant">繁體中文</option>
+          </select></label>
       </div>
       <p class="ai-warning" id="ai-warning" hidden data-i18n="coiHelp"></p>
 

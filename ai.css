@@ -8,14 +8,23 @@
   text-decoration: none;
   line-height: 42px;
   text-align: center;
-  float: right;
-  margin-left: 24px;
+  white-space: nowrap;
 }
 
-.ai-menu:after {
-  content: "";
-  display: block;
-  clear: both;
+/* Flex row: the label takes its own line, the buttons share the next one
+   (full 500px width, so long English labels never wrap the last button to
+   a third row -- the old float layout overflowed by ~10px). */
+.ai-menu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.ai-menu .game-intro {
+  flex-basis: 100%;
+  margin: 0 0 6px;
 }
 
 .ai-status {
@@ -42,15 +51,7 @@
   .ai-buttons {
     width: 135px;
     padding: 0;
-    display: block;
     box-sizing: border-box;
-    margin-top: 2px;
-    margin-left: 10px;
-    margin-right: 0;
-  }
-
-  .ai-buttons:last-child {
-    margin-left: 0;
   }
 
   .game-intro {
@@ -58,18 +59,11 @@
   }
 }
 
-/* Language switcher and fork badge */
-.lang-row {
-  clear: both;
-  text-align: right;
-  margin: 8px 0 12px;
-}
-
-.lang-row select,
+/* Settings row: fork badge on the left, controls on the right */
 .ai-settings select {
   font-family: inherit;
-  font-size: 14px;
-  padding: 4px 8px;
+  font-size: 13px;
+  padding: 3px 6px;
   border: 1px solid #bbada0;
   border-radius: 3px;
   background: #f9f6f2;
@@ -78,14 +72,23 @@
 
 .ai-settings {
   clear: both;
-  text-align: right;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
   margin: 0 0 12px;
   color: #776e65;
-  font-size: 14px;
+  font-size: 13px;
+}
+
+.ai-settings .fork-badge {
+  margin-left: 0;
+  margin-right: auto;
+  font-size: 12px;
 }
 
 .ai-settings label {
-  margin-left: 14px;
+  margin-left: 10px;
 }
 
 .fork-badge {
