@@ -117,6 +117,7 @@ window.requestAnimationFrame(async () => {
 
   const toggleButton = document.querySelector('#ai-toggle');
   const depthEl = document.querySelector('#ai-depth');
+  const speedEl = document.querySelector('#ai-speed');
   const budgetSelect = /** @type{HTMLSelectElement} */(document.querySelector('#ai-budget'));
   const threadsSelect = /** @type{HTMLSelectElement} */(document.querySelector('#ai-threads'));
 
@@ -175,6 +176,7 @@ window.requestAnimationFrame(async () => {
     const finalDir = (dir == -1) ? randomDir : dir
     game.move(finalDir)
     totalMove += 1
+    speedEl.textContent = (totalMove / (Math.max(Date.now() - startTime, 1) / 1000)).toFixed(1)
 
     if (game.over) toggleAI(false)
     if (game.won) {
@@ -191,6 +193,7 @@ window.requestAnimationFrame(async () => {
       toggleButton.textContent = t('stopAI')
       Atomics.store(stats, 0, 0)
       depthEl.textContent = '–'
+      speedEl.textContent = '–'
       step(true)
     } else {
       const endTime = Date.now()
@@ -198,6 +201,9 @@ window.requestAnimationFrame(async () => {
 Moves taken: ${totalMove} moves
 Speed: ${totalMove * 1000 / (endTime - startTime)} moves/s`)
       toggleButton.textContent = t('startAI')
+      speedEl.textContent = (totalMove > 0 && endTime > startTime)
+        ? (totalMove * 1000 / (endTime - startTime)).toFixed(1)
+        : '–'
     }
     aiRunning = running
   }
