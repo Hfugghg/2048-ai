@@ -64,6 +64,11 @@ window.requestAnimationFrame(async () => {
     shared: true,
   })
 
+  // Shared slot where the engine publishes stats (search depth). Using a
+  // separate buffer instead of the worker message keeps the protocol
+  // backward/forward compatible across cached JS versions.
+  const stats = new Int32Array(new SharedArrayBuffer(16))
+
   // Compiled once and instantiated per worker, so N workers don't each
   // recompile the module on startup.
   const module = await WebAssembly.compileStreaming(
@@ -77,7 +82,7 @@ window.requestAnimationFrame(async () => {
     () => createWorker('./js/pool-worker.js', { module, memory }),
   ))
 
-  const worker = await createWorker('./js/worker.js', { module, memory })
+  const worker = await createWorker('./js/worker.js?v=2', { module, memory, stats })
   console.log(`Compute threads: ${threads}`)
 
   /** @type{Map<number, bigint>} */
@@ -127,9 +132,9 @@ window.requestAnimationFrame(async () => {
   let randomDir = 0
   let totalMove, startTime
 
-  worker.addEventListener('message', ({ data }) => {
-    const { dir, depth } = data
-    depthEl.textContent = depth
+  worker.addEventListener('message', ({ data: dir }) => {
+    const depth = Atomics.load(stats, 0)
+    depthEl.textContent = depth > 0 ? depth : '–'
     randomDir = (randomDir + 1) % 4
     const finalDir = (dir == -1) ? randomDir : dir
     game.move(finalDir)
@@ -148,6 +153,7 @@ window.requestAnimationFrame(async () => {
       totalMove = 0
       startTime = Date.now()
       toggleButton.textContent = t('stopAI')
+      Atomics.store(stats, 0, 0)
       depthEl.textContent = '–'
       step(true)
     } else {

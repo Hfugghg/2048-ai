@@ -1,5 +1,5 @@
 addEventListener('message', async ({ data }) => {
-  const { memory } = data
+  const { memory, stats } = data
   const module = /** @type{WebAssembly.Module} */(data.module)
 
   const instance = await WebAssembly.instantiate(module, { env: { memory } })
@@ -16,7 +16,12 @@ addEventListener('message', async ({ data }) => {
       exports.reset_depth()
     }
     const dir = exports.search(board)
-    postMessage({ dir, depth: exports.lastDepth() })
+    // Stats travel over a shared slot, not the message, so that a cached
+    // older main.js -- which reads a bare direction -- never breaks.
+    if (stats) {
+      Atomics.store(stats, 0, exports.lastDepth())
+    }
+    postMessage(dir)
   })
 
   postMessage('ready')
