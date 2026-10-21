@@ -189,6 +189,23 @@ window.requestAnimationFrame(async () => {
   let randomDir = 0
   let totalMove, startTime
 
+  // Live speed: exponential moving average of the per-move intervals (1 s time
+  // constant). The cumulative average since the run started goes stale after a
+  // while; this tracks the current throughput, including slowdowns.
+  const SPEED_TAU_MS = 1000
+  let lastMoveTime = 0
+  let moveSpeed = 0
+
+  function noteMoveTime(now) {
+    const dt = now - lastMoveTime
+    lastMoveTime = now
+    if (dt <= 0) return moveSpeed
+    const instant = 1000 / dt
+    const alpha = 1 - Math.exp(-dt / SPEED_TAU_MS)
+    moveSpeed = moveSpeed === 0 ? instant : moveSpeed + (instant - moveSpeed) * alpha
+    return moveSpeed
+  }
+
   worker.addEventListener('message', ({ data: dir }) => {
     const depth = Atomics.load(stats, 0)
     depthEl.textContent = depth > 0 ? depth : '–'
@@ -196,7 +213,7 @@ window.requestAnimationFrame(async () => {
     const finalDir = (dir == -1) ? randomDir : dir
     game.move(finalDir)
     totalMove += 1
-    speedEl.textContent = (totalMove / (Math.max(Date.now() - startTime, 1) / 1000)).toFixed(1)
+    speedEl.textContent = noteMoveTime(performance.now()).toFixed(1)
 
     if (game.over) toggleAI(false)
     if (game.won) {
@@ -210,6 +227,8 @@ window.requestAnimationFrame(async () => {
     if (running) {
       totalMove = 0
       startTime = Date.now()
+      lastMoveTime = performance.now()
+      moveSpeed = 0
       toggleButton.textContent = t('stopAI')
       Atomics.store(stats, 0, 0)
       depthEl.textContent = '–'
@@ -219,11 +238,11 @@ window.requestAnimationFrame(async () => {
       const endTime = Date.now()
       console.log(`Time elapsed: ${(endTime - startTime) / 1000} seconds
 Moves taken: ${totalMove} moves
-Speed: ${totalMove * 1000 / (endTime - startTime)} moves/s`)
+Average speed: ${totalMove * 1000 / (endTime - startTime)} moves/s
+Last live speed: ${moveSpeed.toFixed(1)} moves/s`)
       toggleButton.textContent = t('startAI')
-      speedEl.textContent = (totalMove > 0 && endTime > startTime)
-        ? (totalMove * 1000 / (endTime - startTime)).toFixed(1)
-        : '–'
+      // Keep the last live reading; the event loop stops here anyway.
+      speedEl.textContent = moveSpeed > 0 ? moveSpeed.toFixed(1) : '–'
     }
     aiRunning = running
   }
