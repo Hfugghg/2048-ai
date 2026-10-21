@@ -4,20 +4,20 @@ pub fn EnumMap(Key: type, Value: type) type {
     else => @compileError("key of `EnumMap` must be an enum"),
   };
 
-  for (info.fields, 0..) |field, value| {
-    if (field.value != value) {
+  for (info.field_values, 0..) |field, value| {
+    if (field != value) {
       @compileError("sparse enum not supported");
     }
   }
 
   return struct {
     const Self = @This();
-    pub const len = info.fields.len;
+    pub const len = info.field_values.len;
 
     pub const keys: [len]Key = blk: {
       var arr: [len]Key = undefined;
       for (&arr, 0..) |*item, key| {
-        item.* = @enumFromInt(key);
+        item.* = @fromBackingInt(key);
       }
       break :blk arr;
     };
@@ -25,11 +25,11 @@ pub fn EnumMap(Key: type, Value: type) type {
     values: [len]Value,
 
     pub inline fn get(self: *const Self, key: Key) *const Value {
-      return &self.values[@intFromEnum(key)];
+      return &self.values[@backingInt(key)];
     }
 
     pub inline fn getMut(self: *Self, key: Key) *Value {
-      return &self.values[@intFromEnum(key)];
+      return &self.values[@backingInt(key)];
     }
   };
 }

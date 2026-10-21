@@ -65,7 +65,7 @@ export fn search(board_data: u64) i32 {
   ctx.last_depth = @max(depth, predicted);
 
   if (searchResult) |dir| {
-    return @intFromEnum(dir);
+    return @backingInt(dir);
   }
   return -1;
 }
