@@ -1,3 +1,51 @@
+/* Header: keep the title and the score boxes on one line. The vendor layout
+   floats both sides, so when the score grows past the remaining width the
+   right block drops below the title and the whole page jumps. Digit counts
+   change what fits, so with proportional figures the jump can repeat as the
+   score climbs. A nowrap flex row is stable; tabular figures keep each box's
+   width from changing as the digits change. */
+.heading {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.heading::after {
+  content: none;
+}
+
+.heading .title {
+  float: none;
+}
+
+.scores-container {
+  float: none;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 4px;
+  min-width: 0;
+}
+
+.score-container,
+.best-container {
+  flex: none;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-size: 24px; /* 1px under the vendor size reserves room for 8 digits */
+}
+
+@media screen and (max-width: 520px) {
+  /* 18px leaves room for eight digits next to the title in the 280px
+     container (the real ceiling is seven; this is headroom). */
+  .score-container,
+  .best-container {
+    font-size: 18px;
+  }
+}
+
 .ai-buttons {
   display: block;
   height: 42px;
