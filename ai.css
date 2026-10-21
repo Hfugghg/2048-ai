@@ -96,9 +96,17 @@
 }
 
 @media screen and (max-width: 520px) {
+  /* 135px buttons do not pair up in the 280px container (2*135 + 12 > 280),
+     leaving one right-aligned button per row. Share the row evenly instead. */
+  .ai-menu {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
   .ai-buttons {
-    width: 135px;
-    padding: 0;
+    width: auto;
+    padding: 0 2px;
     box-sizing: border-box;
   }
 
@@ -137,6 +145,35 @@
 
 .ai-settings label {
   margin-left: 10px;
+}
+
+@media screen and (max-width: 520px) {
+  /* One label/select pair per row: label left, select right. The flex-wrap
+     version right-aligned a different ragged set of controls on every row.
+     This block must follow the base .ai-settings rules above: media queries
+     add no specificity, so the later base rule would win otherwise. */
+  .ai-settings {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .ai-settings .fork-badge {
+    justify-self: start;
+    margin: 0;
+  }
+
+  .ai-settings label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 0;
+  }
+
+  .ai-settings select {
+    flex: none;
+  }
 }
 
 .fork-badge {
