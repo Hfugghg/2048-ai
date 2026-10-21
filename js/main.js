@@ -92,7 +92,7 @@ window.requestAnimationFrame(async () => {
   // engine/JS contract (memory size, exports): bump it on every change so
   // cached older pairs can never mix.
   const module = await WebAssembly.compileStreaming(
-    fetch(new URL('../zig-out/main.wasm?v=2', import.meta.url)),
+    fetch(new URL('../zig-out/main.wasm?v=3', import.meta.url)),
   )
 
   // The pool parks before it touches anything the searcher builds, but every
